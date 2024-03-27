@@ -15,6 +15,30 @@ const Home = () => {
   }, []);
   return (
     <main className="container">
+      <nav className="container">
+        <ul>
+          <li>Femmes</li>
+          <li>Hommes</li>
+          <li>Enfants</li>
+          <li>Maison</li>
+          <li>Divertissement</li>
+          <li>Animaux</li>
+          <li>A propos</li>
+          <li>Notre plateforme</li>
+        </ul>
+      </nav>
+      <div className="hero">
+        <img
+          src="https://lereacteur-vinted.netlify.app/static/media/hero.2c66d85a1335550c4518.jpg"
+          alt=""
+        />
+        <div className="container">
+          <div className="start-div">
+            <h2>Prêts à faire du tri dans vos placards?</h2>
+            <button className="green">Commencer à vendre</button>
+          </div>
+        </div>
+      </div>
       {data.map((offer) => {
         return (
           <Link to={"/offer/" + offer._id} key={offer._id} className="offer">

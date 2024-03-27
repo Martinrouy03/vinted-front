@@ -134,3 +134,86 @@ main {
   font-size: 12px;
   color: #757575;
 }
+
+/* ------- OFFER ------- */
+.offer-page {
+  background-color: #ebedee;
+  padding: 30px 0;
+}
+.offer-page > div {
+  display: flex;
+  gap: 200px;
+  justify-content: center;
+  height: 600px;
+}
+.offer-page img {
+  width: 450px;
+  /* height: 600px; */
+  object-fit: cover;
+}
+.right-panel {
+  background-color: white;
+  width: 400px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.right-panel span {
+  font-size: 24px;
+  color: #111111;
+}
+
+.product-details {
+  padding-bottom: 40px;
+  border-bottom: 1px solid lightgray;
+}
+.product-details > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+.key {
+  font-size: 14px;
+  color: #999999;
+}
+.value {
+  font-size: 14px;
+  color: #666666;
+}
+
+.right-panel button {
+  font-size: 16px;
+  padding: 10px 0;
+  border-radius: 3px;
+}
+
+.description {
+  font-size: 16px;
+  color: #666666;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.description h2 {
+  font-weight: bold;
+  color: black;
+  margin-bottom: 15px;
+  /* line-height: 30px; */
+}
+
+.owner2 {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+.owner2 img {
+  width: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.owner2 span {
+  font-size: 16px;
+  color: #000000;
+  margin-left: 10px;
+}
