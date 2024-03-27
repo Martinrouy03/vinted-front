@@ -1,0 +1,136 @@
+* {
+  box-sizing: border-box;
+}
+.container {
+  width: 1235px;
+  margin: 0 auto;
+}
+
+.bandeau {
+  border-bottom: 1px solid #09b1ba;
+}
+
+.bandeau > div {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-bar {
+  display: flex;
+}
+.buttons button:nth-child(2) {
+  margin: 0 10px;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+nav ul {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  gap: 20px;
+}
+li {
+  font-size: 14px;
+  color: darkgray;
+}
+
+.bandeau img {
+  height: 25px;
+}
+
+.hero {
+  position: relative;
+}
+.start-div {
+  background-color: white;
+  position: absolute;
+  bottom: 100px;
+  width: 400px;
+  height: 270px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 0 45px;
+  gap: 40px;
+}
+.start-div h2 {
+  font-size: 34px;
+  color: black;
+  line-height: 40px;
+}
+.start-div button {
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 3px;
+}
+
+.green {
+  background-color: #2baeb7;
+  color: white;
+  border: none;
+}
+
+.hero img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+}
+/* ------------------ */
+
+/* -----OFFERS------- */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+.owner img {
+  width: 24px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+.owner span {
+  font-size: 12px;
+  color: #757575;
+}
+
+.offer {
+  width: calc((100% - 64px) / 5);
+  /* width: 100%; */
+}
+.offer > img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+.bottom {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.price-and-likes {
+  display: flex;
+  height: 12px;
+  justify-content: space-between;
+}
+
+.total-price a {
+  text-decoration: none;
+  color: #007782;
+  font-size: 12px;
+}
+
+.bottom span {
+  font-size: 12px;
+  color: #757575;
+}
