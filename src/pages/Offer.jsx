@@ -6,15 +6,15 @@ const Offer = () => {
   const { id } = useParams();
   const [offer, setOffer] = useState({});
   const [isDownloading, setIsDownloading] = useState(true);
-  const url = "https://lereacteur-vinted-api.herokuapp.com/offer/" + id;
   const fetchData = async () => {
+    const url = "https://lereacteur-vinted-api.herokuapp.com/offer/" + id;
     const response = await axios.get(url);
     setOffer(response.data);
     setIsDownloading(false);
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [id]);
   console.log(offer);
   return (
     <>

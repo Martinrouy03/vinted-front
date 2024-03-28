@@ -1,17 +1,30 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+// Pages
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
+
+// Components
 import Header from "./components/Header";
+import ModalSignUp from "./components/ModalSignUp";
+import ModalLogin from "./components/ModalLogin";
 
 function App() {
+  const [modalValues, setModalValues] = useState([false, false]);
   return (
     <Router>
-      <Header />
+      <Header visibility={modalValues} setVisibility={setModalValues} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/offer/:id" element={<Offer />} />
       </Routes>
+      {modalValues[0] && (
+        <ModalSignUp path="/signup" setVisibility={setModalValues} />
+      )}
+      {modalValues[1] && (
+        <ModalLogin path="/login" setVisibility={setModalValues} />
+      )}
     </Router>
   );
 }

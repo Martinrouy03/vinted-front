@@ -1,7 +1,7 @@
 import logo from "../assets/vinted_logo.svg";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ visibility, setVisibility }) => {
   return (
     <header>
       <div className="bandeau">
@@ -21,7 +21,24 @@ const Header = () => {
             </div>
           </div>
           <div className="buttons">
-            <button>S'inscrire | Se connecter</button>
+            <button
+              onClick={() => {
+                const newVals = [...visibility];
+                newVals[0] = true;
+                setVisibility(newVals);
+              }}
+            >
+              S'inscrire
+            </button>
+            <button
+              onClick={() => {
+                const newVals = [...visibility];
+                newVals[1] = true;
+                setVisibility(newVals);
+              }}
+            >
+              Se connecter
+            </button>
             <button className="green">Vends tes articles</button>
             <button>?</button>
           </div>

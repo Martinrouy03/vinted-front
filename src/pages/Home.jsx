@@ -4,17 +4,25 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
-    const response = await axios.get(
-      "https://lereacteur-vinted-api.herokuapp.com/offers"
-    );
-    setData(response.data.offers);
+    try {
+      const response = await axios.get(
+        "https://lereacteur-vinted-api.herokuapp.com/offers"
+      );
+      setData(response.data.offers);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
-  return (
-    <main className="container">
+  return isLoading ? (
+    <div>En cours de chargment</div>
+  ) : (
+    <>
       <nav className="container">
         <ul>
           <li>Femmes</li>
@@ -39,32 +47,34 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {data.map((offer) => {
-        return (
-          <Link to={"/offer/" + offer._id} key={offer._id} className="offer">
-            <div className="owner">
-              {Object.keys(offer.owner.account).includes("avatar") && (
-                <img src={offer.owner.account.avatar.url} alt="avatar" />
-              )}
-              <span>{offer.owner.account.username}</span>
-            </div>
-            <img src={offer.product_pictures[0].url} alt="photo" />
-            <div className="bottom">
-              <div className="price-and-likes">
-                <p>{offer.product_price.toFixed(2)} €</p>
-                <div className="likes">coeur</div>
+      <main className="container">
+        {data.map((offer) => {
+          return (
+            <Link to={"/offer/" + offer._id} key={offer._id} className="offer">
+              <div className="owner">
+                {Object.keys(offer.owner.account).includes("avatar") && (
+                  <img src={offer.owner.account.avatar.url} alt="avatar" />
+                )}
+                <span>{offer.owner.account.username}</span>
               </div>
-              <div className="total-price">
-                <a href="">{(offer.product_price + 2).toFixed(2)} € incl.</a>
-                <span>logo</span>
+              <img src={offer.product_pictures[0].url} alt="photo" />
+              <div className="bottom">
+                <div className="price-and-likes">
+                  <p>{offer.product_price.toFixed(2)} €</p>
+                  <div className="likes">coeur</div>
+                </div>
+                <div className="total-price">
+                  <a href="">{(offer.product_price + 2).toFixed(2)} € incl.</a>
+                  <span>logo</span>
+                </div>
+                <span>{offer.product_details[1].TAILLE}</span>
+                <span>{offer.product_details[0].MARQUE}</span>
               </div>
-              <span>{offer.product_details[1].TAILLE}</span>
-              <span>{offer.product_details[0].MARQUE}</span>
-            </div>
-          </Link>
-        );
-      })}
-    </main>
+            </Link>
+          );
+        })}
+      </main>
+    </>
   );
 };
 export default Home;
