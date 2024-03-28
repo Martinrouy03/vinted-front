@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ModalSignUp = ({ setVisibility }) => {
-  const [login, setLogin] = useState({
+const ModalSignUp = ({ setVisibility, setConnexion }) => {
+  const [signup, setSignup] = useState({
     username: "",
     email: "",
     password: "",
@@ -20,10 +19,11 @@ const ModalSignUp = ({ setVisibility }) => {
             const sendData = async () => {
               const token = await axios.post(
                 "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-                login
+                signup
               );
               setFinishSending(true);
-              Cookies.set("token", token);
+              setConnexion(true);
+              Cookies.set("token", token, 7);
             };
             sendData();
           });
@@ -35,35 +35,35 @@ const ModalSignUp = ({ setVisibility }) => {
           type="text"
           placeholder="Nom d'utilisateur"
           onChange={(str) => {
-            const newLogin = { ...login };
+            const newLogin = { ...signup };
             newLogin.username = str;
-            setLogin(newLogin);
+            setSignup(newLogin);
           }}
         />
         <input
           type="email"
           placeholder="Email"
           onChange={(str) => {
-            const newLogin = { ...login };
+            const newLogin = { ...signup };
             newLogin.email = str;
-            setLogin(newLogin);
+            setSignup(newLogin);
           }}
         />
         <input
           type="password"
           placeholder="Mot de passe"
           onChange={(str) => {
-            const newLogin = { ...login };
+            const newLogin = { ...signup };
             newLogin.password = str;
-            setLogin(newLogin);
+            setSignup(newLogin);
           }}
         />
         <div
           className="newsletter"
           onClick={() => {
-            const newLogin = { ...login };
+            const newLogin = { ...signup };
             newLogin.newsletter = !newLogin.newsletter;
-            setLogin(newLogin);
+            setSignup(newLogin);
           }}
         >
           <input type="checkbox" />
@@ -80,14 +80,13 @@ const ModalSignUp = ({ setVisibility }) => {
           value="S'inscrire"
           //   onClick={}
         />
-        <Link
-          to="/login"
+        <button
           onClick={() => {
             setVisibility([false, true]);
           }}
         >
           Tu as déjà un compte? Connecte-toi!
-        </Link>
+        </button>
       </form>
     </div>
   );

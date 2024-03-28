@@ -1,7 +1,7 @@
 import logo from "../assets/vinted_logo.svg";
 import { Link } from "react-router-dom";
 
-const Header = ({ visibility, setVisibility }) => {
+const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
   return (
     <header>
       <div className="bandeau">
@@ -20,28 +20,40 @@ const Header = ({ visibility, setVisibility }) => {
               <input type="text" placeholder="Rechercher des articles" />
             </div>
           </div>
-          <div className="buttons">
+          {isConnected ? (
             <button
+              id="deconnexion"
               onClick={() => {
-                const newVals = [...visibility];
-                newVals[0] = true;
-                setVisibility(newVals);
+                setConnexion(false);
+                Cookies.remove("token");
               }}
             >
-              S'inscrire
+              Se déconnecter
             </button>
-            <button
-              onClick={() => {
-                const newVals = [...visibility];
-                newVals[1] = true;
-                setVisibility(newVals);
-              }}
-            >
-              Se connecter
-            </button>
-            <button className="green">Vends tes articles</button>
-            <button>?</button>
-          </div>
+          ) : (
+            <div className="buttons">
+              <button
+                onClick={() => {
+                  const newVals = [...visibility];
+                  newVals[0] = true;
+                  setVisibility(newVals);
+                }}
+              >
+                S'inscrire
+              </button>
+              <button
+                onClick={() => {
+                  const newVals = [...visibility];
+                  newVals[1] = true;
+                  setVisibility(newVals);
+                }}
+              >
+                Se connecter
+              </button>
+              {/* <button className="green">Vends tes articles</button>
+            <button>?</button> */}
+            </div>
+          )}
           <select name="language" id="">
             <option value="French">FR</option>
             <option value="English">EN</option>
