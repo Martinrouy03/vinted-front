@@ -1,16 +1,19 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(0);
   const fetchData = async () => {
     try {
       const response = await axios.get(
         "https://lereacteur-vinted-api.herokuapp.com/offers"
       );
-      setData(response.data.offers);
+      setData(response.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -19,6 +22,27 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const pageNbLoop = (nb, limit) => {
+    let pageDivs = [];
+    for (let i = 1; i <= nb; i++) {
+      pageDivs.push(
+        <button
+          key={i}
+          onClick={() => {
+            const newSkip = limit * (i - 1);
+            setSkip(newSkip);
+          }}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageDivs;
+  };
+  console.log(data.count);
+  let pageNb = limit ? Math.ceil(data.count / limit) : undefined;
+  console.log(skip, limit, pageNb);
   return isLoading ? (
     <div>En cours de chargment</div>
   ) : (
@@ -47,8 +71,29 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div className="pages-nav">
+        <label htmlFor="nb-max">Nombre d'articles par page: </label>
+        <select
+          name="nb-max"
+          id=""
+          onChange={(e) => {
+            setLimit(e.target.value);
+          }}
+        >
+          <option value={data.count}>Tous les articles</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+        </select>
+        {limit < data.count && (
+          <div className="page-buttons">
+            <p>Aller à la page: </p>
+            {pageNbLoop(pageNb, limit)}
+          </div>
+        )}
+      </div>
       <main className="container">
-        {data.map((offer) => {
+        {data.offers.slice(skip, skip + limit).map((offer) => {
           return (
             <Link to={"/offer/" + offer._id} key={offer._id} className="offer">
               <div className="owner">
@@ -61,10 +106,10 @@ const Home = () => {
               <div className="bottom">
                 <div className="price-and-likes">
                   <p>{offer.product_price.toFixed(2)} €</p>
-                  <div className="likes">coeur</div>
+                  <FontAwesomeIcon icon="fa-regular fa-heart" />
                 </div>
                 <div className="total-price">
-                  <a href="">{(offer.product_price + 2).toFixed(2)} € incl.</a>
+                  <p>{(offer.product_price + 2).toFixed(2)} € incl.</p>
                   <span>logo</span>
                 </div>
                 <span>{offer.product_details[1].TAILLE}</span>

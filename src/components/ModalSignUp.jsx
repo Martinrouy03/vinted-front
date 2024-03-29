@@ -9,52 +9,61 @@ const ModalSignUp = ({ setVisibility, setConnexion }) => {
     password: "",
     newsletter: false,
   });
-  const [finishSending, setFinishSending] = useState(false);
   return (
-    <div className="modal-root">
+    <div
+      className="modal-root"
+      onClick={() => {
+        setVisibility([false, false]);
+      }}
+    >
       <form
         className="modal"
-        onSubmit={() => {
-          useEffect(() => {
-            const sendData = async () => {
-              const token = await axios.post(
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const sendData = async () => {
+            try {
+              const response = await axios.post(
                 "https://lereacteur-vinted-api.herokuapp.com/user/signup",
                 signup
               );
-              setFinishSending(true);
               setConnexion(true);
-              Cookies.set("token", token, 7);
-            };
-            sendData();
-          });
-          finishSending && setVisibility([false, false]);
+              Cookies.set("token", response.data.token, { expires: 7 });
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          sendData();
+          setVisibility([false, false]);
         }}
       >
         <h1>S'incrire</h1>
         <input
           type="text"
           placeholder="Nom d'utilisateur"
-          onChange={(str) => {
+          onChange={(event) => {
             const newLogin = { ...signup };
-            newLogin.username = str;
+            newLogin.username = event.target.value;
             setSignup(newLogin);
           }}
         />
         <input
           type="email"
           placeholder="Email"
-          onChange={(str) => {
+          onChange={(event) => {
             const newLogin = { ...signup };
-            newLogin.email = str;
+            newLogin.email = event.target.value;
             setSignup(newLogin);
           }}
         />
         <input
           type="password"
           placeholder="Mot de passe"
-          onChange={(str) => {
+          onChange={(event) => {
             const newLogin = { ...signup };
-            newLogin.password = str;
+            newLogin.password = event.target.value;
             setSignup(newLogin);
           }}
         />

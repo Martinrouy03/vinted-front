@@ -1,6 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+// import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+library.add(faHeart);
 
 // Pages
 import Home from "./pages/Home";

@@ -1,6 +1,6 @@
 import logo from "../assets/vinted_logo.svg";
 import { Link } from "react-router-dom";
-
+import Cookies from "js-cookie";
 const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
   return (
     <header>
@@ -33,6 +33,7 @@ const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
           ) : (
             <div className="buttons">
               <button
+                className="green"
                 onClick={() => {
                   const newVals = [...visibility];
                   newVals[0] = true;
@@ -42,6 +43,7 @@ const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
                 S'inscrire
               </button>
               <button
+                className="green"
                 onClick={() => {
                   const newVals = [...visibility];
                   newVals[1] = true;

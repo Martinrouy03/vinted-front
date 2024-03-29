@@ -7,43 +7,44 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
     email: "",
     password: "",
   });
-  const [finishLogin, setFinishLogin] = useState(false);
   return (
     <div className="modal-root">
       <form
         className="modal"
-        onSubmit={() => {
-          useEffect(() => {
-            const sendLoginInfo = async () => {
-              const token = await axios.post(
+        onSubmit={(e) => {
+          e.preventDefault();
+          const sendLoginInfo = async () => {
+            try {
+              const response = await axios.post(
                 "https://lereacteur-vinted-api.herokuapp.com/user/login",
                 login
               );
-              setFinishLogin(true);
               setConnexion(true);
-              Cookies.set("token", token, 7);
-            };
-            sendLoginInfo();
-          });
-          finishSending && setVisibility([false, false]);
+              Cookies.set("token", response.data.token, 7);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          sendLoginInfo();
+          setVisibility([false, false]);
         }}
       >
         <h1>Se connecter</h1>
         <input
           type="email"
           placeholder="Email"
-          onChange={(str) => {
+          onChange={(event) => {
             const newLogin = { ...login };
-            newLogin.email = str;
+            newLogin.email = event.target.value;
             setLogin(newLogin);
           }}
         />
         <input
           type="password"
           placeholder="Mot de passe"
-          onChange={(str) => {
+          onChange={(event) => {
             const newLogin = { ...login };
-            newLogin.password = str;
+            newLogin.password = event.target.value;
             setLogin(newLogin);
           }}
         />
