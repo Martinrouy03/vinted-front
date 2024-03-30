@@ -11,15 +11,47 @@
 }
 
 .bandeau > div {
-  height: 50px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.search-bar {
+.search-input {
   display: flex;
+  width: 100%;
+}
+.search-input input {
+  flex: 1;
 }
 
+.queries {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.price-range-container {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.price-range-container span {
+  width: 100px;
+}
+.price-range {
+  width: 200px;
+}
+/* #output {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: "#09b1ba";
+} */
+.labels {
+  height: 12px;
+  width: 240px;
+  margin-bottom: 10px;
+  position: relative;
+}
 .buttons {
   display: flex;
   gap: 20px;
@@ -91,6 +123,30 @@ li {
   object-fit: cover;
 }
 /* ------------------ */
+
+/* -----Page-Nav------- */
+
+.pages-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 20px 0px;
+  color: rgb(120, 120, 120);
+}
+.pages-nav div {
+  display: flex;
+  gap: 10px;
+  /* color: darkgray; */
+}
+.pages-nav div button {
+  border: none;
+  background-color: white;
+}
+.pages-nav div button:hover {
+  background-color: #2baeb7;
+  color: white;
+  border-radius: 3px;
+}
 
 /* -----OFFERS------- */
 main {

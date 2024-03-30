@@ -1,7 +1,23 @@
 import logo from "../assets/vinted_logo.svg";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { Range } from "react-range";
+import { useState } from "react";
+const Header = ({
+  visibility,
+  setVisibility,
+  isConnected,
+  setConnexion,
+  setQuery,
+  state,
+  setState,
+}) => {
+  const navigate = useNavigate();
+  const [str, setStr] = useState("");
+  const valueMin = String(state.values[0] * 2 - 10) + "px";
+  const valueMax = String(state.values[1] * 2) + "px";
   return (
     <header>
       <div className="bandeau">
@@ -9,15 +25,104 @@ const Header = ({ visibility, setVisibility, isConnected, setConnexion }) => {
           <Link to="/">
             <img src={logo} alt="vinted_logo" />
           </Link>
-          <div className="search-bar">
-            <select name="search-type" id="">
-              <option value="articles">Articles</option>
-              <option value="membres">Membres</option>
-              <option value="aide">Centre d'aide</option>
-            </select>
 
-            <div className="search-input">
-              <input type="text" placeholder="Rechercher des articles" />
+          <div className="queries">
+            <div className="search-bar">
+              <form
+                className="search-input"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setQuery(str);
+                  setStr("");
+                  navigate("/offers");
+                }}
+              >
+                <button type="submit">
+                  <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+                </button>
+                <input
+                  type="text"
+                  value={str}
+                  placeholder="Rechercher des articles"
+                  onChange={(event) => {
+                    setStr(event.target.value);
+                    navigate("/offers");
+                  }}
+                />
+              </form>
+            </div>
+            <div className="price-range-container">
+              <span>Prix entre: </span>
+              <div className="price-range">
+                <div className="labels">
+                  <output
+                    style={{
+                      position: "absolute",
+                      top: "0px",
+                      left: valueMin,
+                      padding: "2px",
+                      borderRadius: "5px",
+                      backgroundColor: "#09b1ba",
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                    id="output"
+                  >
+                    {Math.ceil(state.values[0])} €
+                  </output>
+                  <output
+                    style={{
+                      position: "absolute",
+                      top: "0px",
+                      left: valueMax,
+                      padding: "2px",
+                      borderRadius: "5px",
+                      backgroundColor: "#09b1ba",
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                    id="output"
+                  >
+                    {Math.ceil(state.values[1])} €
+                  </output>
+                </div>
+                <Range
+                  step={0.1}
+                  min={0}
+                  max={100}
+                  values={state.values}
+                  onChange={(values) => {
+                    setState({ values });
+                    navigate("/offers");
+                  }}
+                  renderTrack={({ props, children }) => (
+                    <div
+                      {...props}
+                      ref={props.ref}
+                      style={{
+                        ...props.style,
+                        height: "6px",
+                        width: "100%",
+                        backgroundColor: "#ccc",
+                      }}
+                    >
+                      {children}
+                    </div>
+                  )}
+                  renderThumb={({ props }) => (
+                    <div
+                      {...props}
+                      style={{
+                        ...props.style,
+                        height: "15px",
+                        width: "15px",
+                        borderRadius: "50%",
+                        backgroundColor: "#09b1ba",
+                      }}
+                    />
+                  )}
+                />
+              </div>
             </div>
           </div>
           {isConnected ? (

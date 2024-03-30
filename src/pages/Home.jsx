@@ -3,17 +3,18 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = () => {
+const Home = ({ limit, setLimit }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(0);
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
         "https://lereacteur-vinted-api.herokuapp.com/offers"
       );
       setData(response.data);
+      setLimit(response.data.count);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,9 +41,7 @@ const Home = () => {
     }
     return pageDivs;
   };
-  console.log(data.count);
-  let pageNb = limit ? Math.ceil(data.count / limit) : undefined;
-  console.log(skip, limit, pageNb);
+  let pageNb = Math.ceil(data.count / limit);
   return isLoading ? (
     <div>En cours de chargment</div>
   ) : (
@@ -71,16 +70,17 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="pages-nav">
+      <div className="pages-nav container">
         <label htmlFor="nb-max">Nombre d'articles par page: </label>
         <select
           name="nb-max"
           id=""
           onChange={(e) => {
             setLimit(e.target.value);
+            setSkip(0);
           }}
         >
-          <option value={data.count}>Tous les articles</option>
+          <option value={data.count}>Tous</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -93,7 +93,7 @@ const Home = () => {
         )}
       </div>
       <main className="container">
-        {data.offers.slice(skip, skip + limit).map((offer) => {
+        {data.offers.slice(skip, skip + Number(limit)).map((offer) => {
           return (
             <Link to={"/offer/" + offer._id} key={offer._id} className="offer">
               <div className="owner">

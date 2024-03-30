@@ -15,7 +15,6 @@ const Offer = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-  console.log(offer);
   return (
     <>
       {isDownloading ? (
