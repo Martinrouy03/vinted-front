@@ -20,41 +20,46 @@ const Offers = ({ query, state }) => {
   useEffect(() => {
     fetchFilteredData();
   }, [query, state]);
+  // console.log(filteredOffers);
   return (
     <>
       {isDownloading ? (
         <div>En cours de téléchargement</div>
       ) : (
         <main className="container">
-          {filteredOffers.offers.map((offer) => {
-            return (
-              <Link
-                to={"/offer/" + offer._id}
-                key={offer._id}
-                className="offer"
-              >
-                <div className="owner">
-                  {Object.keys(offer.owner.account).includes("avatar") && (
-                    <img src={offer.owner.account.avatar.url} alt="avatar" />
-                  )}
-                  <span>{offer.owner.account.username}</span>
-                </div>
-                <img src={offer.product_pictures[0].url} alt="photo" />
-                <div className="bottom">
-                  <div className="price-and-likes">
-                    <p>{offer.product_price.toFixed(2)} €</p>
-                    <FontAwesomeIcon icon="fa-regular fa-heart" />
+          {filteredOffers.count === 0 ? (
+            <p>Désolé, aucune article ne correspond à votre recherche...</p>
+          ) : (
+            filteredOffers.offers.map((offer) => {
+              return (
+                <Link
+                  to={"/offer/" + offer._id}
+                  key={offer._id}
+                  className="offer"
+                >
+                  <div className="owner">
+                    {Object.keys(offer.owner.account).includes("avatar") && (
+                      <img src={offer.owner.account.avatar.url} alt="avatar" />
+                    )}
+                    <span>{offer.owner.account.username}</span>
                   </div>
-                  <div className="total-price">
-                    <p>{(offer.product_price + 2).toFixed(2)} € incl.</p>
-                    <span>logo</span>
+                  <img src={offer.product_pictures[0].url} alt="photo" />
+                  <div className="bottom">
+                    <div className="price-and-likes">
+                      <p>{offer.product_price.toFixed(2)} €</p>
+                      <FontAwesomeIcon icon="fa-regular fa-heart" />
+                    </div>
+                    <div className="total-price">
+                      <p>{(offer.product_price + 2).toFixed(2)} € incl.</p>
+                      <span>logo</span>
+                    </div>
+                    <span>{offer.product_details[1].TAILLE}</span>
+                    <span>{offer.product_details[0].MARQUE}</span>
                   </div>
-                  <span>{offer.product_details[1].TAILLE}</span>
-                  <span>{offer.product_details[0].MARQUE}</span>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })
+          )}
         </main>
       )}
     </>

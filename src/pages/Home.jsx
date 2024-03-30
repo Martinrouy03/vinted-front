@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = ({ limit, setLimit }) => {
+const Home = ({ limit, setLimit, setQuery, setState }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [skip, setSkip] = useState(0);
@@ -15,6 +15,8 @@ const Home = ({ limit, setLimit }) => {
       );
       setData(response.data);
       setLimit(response.data.count);
+      setQuery("");
+      setState({ values: [0, 100] });
       setIsLoading(false);
     } catch (error) {
       console.log(error);

@@ -8,9 +8,17 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
     password: "",
   });
   return (
-    <div className="modal-root">
+    <div
+      className="modal-root"
+      onClick={() => {
+        setVisibility([false, false]);
+      }}
+    >
       <form
         className="modal"
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
         onSubmit={(e) => {
           e.preventDefault();
           const sendLoginInfo = async () => {

@@ -35,7 +35,17 @@ function App() {
         setState={setState}
       />
       <Routes>
-        <Route path="/" element={<Home limit={limit} setLimit={setLimit} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              limit={limit}
+              setLimit={setLimit}
+              setQuery={setQuery}
+              setState={setState}
+            />
+          }
+        />
         <Route path="/offer/:id" element={<Offer />} />
         <Route
           path="/offers/"

@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
 }
 .container {
   width: 1235px;
@@ -16,12 +18,23 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .search-input {
+  background-color: rgb(235, 235, 235);
+  padding: 3px;
+  border-radius: 3px;
   display: flex;
   width: 100%;
+  border: 1px solid lightgray;
 }
 .search-input input {
   flex: 1;
+  border: none;
+  background-color: unset;
+}
+.search-input button {
+  border: none;
+  background-color: unset;
 }
 
 .queries {
@@ -41,11 +54,7 @@
 .price-range {
   width: 200px;
 }
-/* #output {
-  padding: 5px;
-  border-radius: 5px;
-  background-color: "#09b1ba";
-} */
+
 .labels {
   height: 12px;
   width: 240px;
@@ -155,6 +164,11 @@ main {
   gap: 16px;
 }
 
+main > p {
+  text-align: center;
+  width: 100%;
+  margin-top: 50px;
+}
 a {
   text-decoration: none;
   color: #000000;
