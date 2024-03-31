@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 
 const ModalSignUp = ({ setVisibility, setConnexion }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [signup, setSignup] = useState({
     username: "",
     email: "",
@@ -32,11 +33,12 @@ const ModalSignUp = ({ setVisibility, setConnexion }) => {
               setConnexion(true);
               Cookies.set("token", response.data.token, { expires: 7 });
             } catch (error) {
-              console.log(error);
+              setErrorMessage(error.response.data.message);
+              console.log(error.response.data.message);
             }
           };
           sendData();
-          setVisibility([false, false]);
+          !errorMessage && setVisibility([false, false]);
         }}
       >
         <h1>S'incrire</h1>
@@ -67,6 +69,9 @@ const ModalSignUp = ({ setVisibility, setConnexion }) => {
             setSignup(newLogin);
           }}
         />
+        {errorMessage && (
+          <p style={{ fontSize: "14px", color: "red" }}>{errorMessage}</p>
+        )}
         <div
           className="newsletter"
           onClick={() => {

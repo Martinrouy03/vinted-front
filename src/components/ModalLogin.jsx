@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const ModalLogin = ({ setVisibility, setConnexion }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState({
     email: "",
     password: "",
@@ -21,6 +22,7 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
         }}
         onSubmit={(e) => {
           e.preventDefault();
+          let error = 0;
           const sendLoginInfo = async () => {
             try {
               const response = await axios.post(
@@ -30,11 +32,12 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
               setConnexion(true);
               Cookies.set("token", response.data.token, 7);
             } catch (error) {
-              console.log(error);
+              setErrorMessage(error.response.data.message);
+              error = 1;
             }
           };
           sendLoginInfo();
-          setVisibility([false, false]);
+          !error && setVisibility([false, false]);
         }}
       >
         <h1>Se connecter</h1>
@@ -56,7 +59,9 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
             setLogin(newLogin);
           }}
         />
-
+        {errorMessage && (
+          <p style={{ fontSize: "14px", color: "red" }}>{errorMessage}</p>
+        )}
         <input type="submit" className="green" value="Se connecter" />
         <button
           onClick={() => {
