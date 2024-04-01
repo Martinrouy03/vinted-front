@@ -3,28 +3,17 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = ({
-  limit,
-  // query,
-  state,
-  sort,
-  setLimit,
-  setSort,
-  str,
-  setStr,
-}) => {
+const Home = ({ limit, state, sort, setLimit, str }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
 
   const fetchData = async () => {
-    // console.log(state.values);
     try {
       const response = await axios.get(
-        `https://lereacteur-vinted-api.herokuapp.com/offers?title=${str}&priceMin=${state.values[0]}&priceMax=${state.values[1]}&sort=${sort}`
+        `https://lereacteur-vinted-api.herokuapp.com/offers?limit=${limit}&page=${page}&title=${str}&priceMin=${state.values[0]}&priceMax=${state.values[1]}&sort=${sort}`
       );
       setData(response.data);
-      setLimit(response.data.count);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -32,17 +21,16 @@ const Home = ({
   };
   useEffect(() => {
     fetchData();
-  }, [str, state, sort]);
+  }, [str, state, sort, page]);
 
-  const pageNbLoop = (nb, limit) => {
+  const pageNbLoop = (nb) => {
     let pageDivs = [];
     for (let i = 1; i <= nb; i++) {
       pageDivs.push(
         <button
           key={i}
           onClick={() => {
-            const newSkip = limit * (i - 1);
-            setSkip(newSkip);
+            setPage(i);
           }}
         >
           {i}
@@ -86,7 +74,6 @@ const Home = ({
           name="nb-max"
           onChange={(e) => {
             setLimit(e.target.value);
-            setSkip(0);
           }}
         >
           <option value={data.count}>Tous</option>
@@ -97,7 +84,7 @@ const Home = ({
         {limit < data.count && (
           <div className="page-buttons">
             <p>Aller à la page: </p>
-            {pageNbLoop(pageNb, limit)}
+            {pageNbLoop(pageNb)}
           </div>
         )}
       </div>
@@ -105,7 +92,7 @@ const Home = ({
         {data.count === 0 ? (
           <p>Désolé, aucune article ne correspond à votre recherche...</p>
         ) : (
-          data.offers.slice(skip, skip + Number(limit)).map((offer) => {
+          data.offers.map((offer) => {
             return (
               <Link
                 to={"/offer/" + offer._id}
