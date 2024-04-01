@@ -10,35 +10,35 @@ const ModalSignUp = ({ setVisibility, setConnexion }) => {
     password: "",
     newsletter: false,
   });
+  const sendData = async () => {
+    try {
+      const response = await axios.post(
+        "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+        signup
+      );
+      setConnexion(true);
+      setVisibility([false, false]);
+      Cookies.set("token", response.data.token, { expires: 7 });
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+      console.log(error.response.data.message);
+    }
+  };
   return (
     <div
       className="modal-root"
-      onClick={() => {
+      onMouseDown={() => {
         setVisibility([false, false]);
       }}
     >
       <form
         className="modal"
-        onClick={(event) => {
+        onMouseDown={(event) => {
           event.stopPropagation();
         }}
         onSubmit={(e) => {
           e.preventDefault();
-          const sendData = async () => {
-            try {
-              const response = await axios.post(
-                "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-                signup
-              );
-              setConnexion(true);
-              Cookies.set("token", response.data.token, { expires: 7 });
-            } catch (error) {
-              setErrorMessage(error.response.data.message);
-              console.log(error.response.data.message);
-            }
-          };
           sendData();
-          !errorMessage && setVisibility([false, false]);
         }}
       >
         <h1>S'incrire</h1>

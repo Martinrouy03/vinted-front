@@ -1,13 +1,38 @@
 import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const ModalLogin = ({ setVisibility, setConnexion }) => {
+const ModalLogin = ({
+  setVisibility,
+  setConnexion,
+  isPublishing,
+  setIsPublishing,
+}) => {
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
+  const sendLoginInfo = async () => {
+    try {
+      const response = await axios.post(
+        "https://lereacteur-vinted-api.herokuapp.com/user/login",
+        login
+      );
+      setConnexion(true);
+      setVisibility([false, false]);
+      console.log(isPublishing);
+      if (isPublishing) {
+        setIsPublishing(false);
+        navigate("/publish");
+      }
+      Cookies.set("token", response.data.token, 7);
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+  };
   return (
     <div
       className="modal-root"
@@ -22,22 +47,7 @@ const ModalLogin = ({ setVisibility, setConnexion }) => {
         }}
         onSubmit={(e) => {
           e.preventDefault();
-          let error = 0;
-          const sendLoginInfo = async () => {
-            try {
-              const response = await axios.post(
-                "https://lereacteur-vinted-api.herokuapp.com/user/login",
-                login
-              );
-              setConnexion(true);
-              Cookies.set("token", response.data.token, 7);
-            } catch (error) {
-              setErrorMessage(error.response.data.message);
-              error = 1;
-            }
-          };
           sendLoginInfo();
-          !error && setVisibility([false, false]);
         }}
       >
         <h1>Se connecter</h1>

@@ -4,12 +4,13 @@ import { useState } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
 library.add(faHeart, faMagnifyingGlass);
 
 // Pages
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
-import Offers from "./pages/Offers";
+import Publish from "./pages/Publish";
 
 // Components
 import Header from "./components/Header";
@@ -19,9 +20,11 @@ import ModalLogin from "./components/ModalLogin";
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [modalValues, setModalValues] = useState([false, false]);
-  const [query, setQuery] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
   const [state, setState] = useState({ values: [0, 100] });
   const [limit, setLimit] = useState(0);
+  const [sort, setSort] = useState("");
+  const [str, setStr] = useState("");
 
   return (
     <Router>
@@ -30,9 +33,13 @@ function App() {
         setVisibility={setModalValues}
         isConnected={isConnected}
         setConnexion={setIsConnected}
-        setQuery={setQuery}
         state={state}
         setState={setState}
+        sort={sort}
+        setSort={setSort}
+        str={str}
+        setStr={setStr}
+        setIsPublishing={setIsPublishing}
       />
       <Routes>
         <Route
@@ -40,16 +47,25 @@ function App() {
           element={
             <Home
               limit={limit}
+              state={state}
+              sort={sort}
               setLimit={setLimit}
-              setQuery={setQuery}
               setState={setState}
+              setSort={setSort}
+              str={str}
+              setStr={setStr}
             />
           }
         />
         <Route path="/offer/:id" element={<Offer />} />
         <Route
-          path="/offers/"
-          element={<Offers query={query} state={state} />}
+          path="/publish"
+          element={
+            <Publish
+              isPublishing={isPublishing}
+              setIsPublishing={setIsPublishing}
+            />
+          }
         />
       </Routes>
       {modalValues[0] && (
@@ -62,6 +78,8 @@ function App() {
         <ModalLogin
           setVisibility={setModalValues}
           setConnexion={setIsConnected}
+          isPublishing={isPublishing}
+          setIsPublishing={setIsPublishing}
         />
       )}
     </Router>

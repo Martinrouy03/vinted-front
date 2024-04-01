@@ -3,20 +3,28 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = ({ limit, setLimit, setQuery, setState }) => {
+const Home = ({
+  limit,
+  // query,
+  state,
+  sort,
+  setLimit,
+  setSort,
+  str,
+  setStr,
+}) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [skip, setSkip] = useState(0);
 
   const fetchData = async () => {
+    // console.log(state.values);
     try {
       const response = await axios.get(
-        "https://lereacteur-vinted-api.herokuapp.com/offers"
+        `https://lereacteur-vinted-api.herokuapp.com/offers?title=${str}&priceMin=${state.values[0]}&priceMax=${state.values[1]}&sort=${sort}`
       );
       setData(response.data);
       setLimit(response.data.count);
-      setQuery("");
-      setState({ values: [0, 100] });
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -24,7 +32,7 @@ const Home = ({ limit, setLimit, setQuery, setState }) => {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [str, state, sort]);
 
   const pageNbLoop = (nb, limit) => {
     let pageDivs = [];
@@ -76,7 +84,6 @@ const Home = ({ limit, setLimit, setQuery, setState }) => {
         <label htmlFor="nb-max">Nombre d'articles par page: </label>
         <select
           name="nb-max"
-          id=""
           onChange={(e) => {
             setLimit(e.target.value);
             setSkip(0);
@@ -95,31 +102,39 @@ const Home = ({ limit, setLimit, setQuery, setState }) => {
         )}
       </div>
       <main className="container">
-        {data.offers.slice(skip, skip + Number(limit)).map((offer) => {
-          return (
-            <Link to={"/offer/" + offer._id} key={offer._id} className="offer">
-              <div className="owner">
-                {Object.keys(offer.owner.account).includes("avatar") && (
-                  <img src={offer.owner.account.avatar.url} alt="avatar" />
-                )}
-                <span>{offer.owner.account.username}</span>
-              </div>
-              <img src={offer.product_pictures[0].url} alt="photo" />
-              <div className="bottom">
-                <div className="price-and-likes">
-                  <p>{offer.product_price.toFixed(2)} €</p>
-                  <FontAwesomeIcon icon="fa-regular fa-heart" />
+        {data.count === 0 ? (
+          <p>Désolé, aucune article ne correspond à votre recherche...</p>
+        ) : (
+          data.offers.slice(skip, skip + Number(limit)).map((offer) => {
+            return (
+              <Link
+                to={"/offer/" + offer._id}
+                key={offer._id}
+                className="offer"
+              >
+                <div className="owner">
+                  {Object.keys(offer.owner.account).includes("avatar") && (
+                    <img src={offer.owner.account.avatar.url} alt="avatar" />
+                  )}
+                  <span>{offer.owner.account.username}</span>
                 </div>
-                <div className="total-price">
-                  <p>{(offer.product_price + 2).toFixed(2)} € incl.</p>
-                  <span>logo</span>
+                <img src={offer.product_pictures[0].url} alt="photo" />
+                <div className="bottom">
+                  <div className="price-and-likes">
+                    <p>{offer.product_price.toFixed(2)} €</p>
+                    <FontAwesomeIcon icon="fa-regular fa-heart" />
+                  </div>
+                  <div className="total-price">
+                    <p>{(offer.product_price + 2).toFixed(2)} € incl.</p>
+                    <span>logo</span>
+                  </div>
+                  <span>{offer.product_details[1].TAILLE}</span>
+                  <span>{offer.product_details[0].MARQUE}</span>
                 </div>
-                <span>{offer.product_details[1].TAILLE}</span>
-                <span>{offer.product_details[0].MARQUE}</span>
-              </div>
-            </Link>
-          );
-        })}
+              </Link>
+            );
+          })
+        )}
       </main>
     </>
   );

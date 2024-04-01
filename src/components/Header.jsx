@@ -1,21 +1,24 @@
 import logo from "../assets/vinted_logo.svg";
-import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { Range } from "react-range";
-import { useState } from "react";
+
 const Header = ({
   visibility,
   setVisibility,
   isConnected,
   setConnexion,
-  setQuery,
+  str,
   state,
+  sort,
+  setStr,
   setState,
+  setSort,
+  setIsPublishing,
 }) => {
   const navigate = useNavigate();
-  const [str, setStr] = useState("");
   const valueMin = String(state.values[0] * 2 - 10) + "px";
   const valueMax = String(state.values[1] * 2) + "px";
   return (
@@ -28,15 +31,7 @@ const Header = ({
 
           <div className="queries">
             <div className="search-bar">
-              <form
-                className="search-input"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  setQuery(str);
-                  setStr("");
-                  navigate("/offers");
-                }}
-              >
+              <div className="search-input">
                 <button type="submit">
                   <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
                 </button>
@@ -46,12 +41,22 @@ const Header = ({
                   placeholder="Rechercher des articles"
                   onChange={(event) => {
                     setStr(event.target.value);
-                    navigate("/offers");
                   }}
                 />
-              </form>
+              </div>
             </div>
             <div className="price-range-container">
+              <select
+                name="priceOrder"
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                }}
+              >
+                <option value="">Trier par prix:</option>
+                <option value="price-asc">croissant</option>
+                <option value="price-desc">décroissant</option>
+              </select>
               <span>Prix entre: </span>
               <div className="price-range">
                 <div className="labels">
@@ -93,12 +98,10 @@ const Header = ({
                   values={state.values}
                   onChange={(values) => {
                     setState({ values });
-                    navigate("/offers");
                   }}
                   renderTrack={({ props, children }) => (
                     <div
                       {...props}
-                      ref={props.ref}
                       style={{
                         ...props.style,
                         height: "6px",
@@ -130,6 +133,7 @@ const Header = ({
               id="deconnexion"
               onClick={() => {
                 setConnexion(false);
+                navigate("/");
                 Cookies.remove("token");
               }}
             >
@@ -157,16 +161,23 @@ const Header = ({
               >
                 Se connecter
               </button>
-              {/* <button className="green">Vends tes articles</button>
-            <button>?</button> */}
             </div>
           )}
-          <select name="language" id="">
-            <option value="French">FR</option>
-            <option value="English">EN</option>
-            <option value="Spanish">SP</option>
-            <option value="Dutch">DE</option>
-          </select>
+
+          <button
+            className="green"
+            id="sell"
+            onClick={() => {
+              if (isConnected) {
+                navigate("/publish");
+              } else {
+                setIsPublishing(true);
+                setVisibility([false, true]);
+              }
+            }}
+          >
+            Vends tes articles
+          </button>
         </div>
       </div>
     </header>

@@ -20,7 +20,7 @@ const Offer = () => {
       {isDownloading ? (
         <div>En cours de téléchargement</div>
       ) : (
-        <div className="offer-page">
+        <div className="newPage">
           <div className="container">
             <img src={offer.product_pictures[0].url} alt="photo" />
             <div className="right-panel">
