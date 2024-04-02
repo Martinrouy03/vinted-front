@@ -7,8 +7,9 @@ import { useState } from "react";
 import axios from "axios";
 
 const CheckoutForm = ({ price, title }) => {
+  const [isCompleted, setIsCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  //   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   let total = price + 0.4 + 0.8;
   // Récupération du contenu des inputs:
   const elements = useElements();
@@ -34,12 +35,38 @@ const CheckoutForm = ({ price, title }) => {
       {
         amount: Number((price * 100).toFixed(0)),
         currency: "eur",
-        description: { title },
+        description: title,
       }
     );
     console.log(response.data);
+    const clientSecret = response.data.client_secret;
+
+    // Requête à Stripe pour valider le paiement
+    try {
+      const stripeResp = await stripe.confirmPayment({
+        elements,
+        clientSecret,
+        confirmParams: {
+          return_url: "http://localhost:5173/",
+        },
+      });
+      // Si erreur pendant confirmation
+      if (stripeResp.error) {
+        // On la montre au client
+        setErrorMessage(stripeResp.error.message);
+      }
+      if (stripeResp.paymentIntent.status === "succeeded") {
+        setIsCompleted(true);
+      }
+      // Chargement terminé:
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
-  return (
+  return isCompleted ? (
+    <h1>Paiement effectué</h1>
+  ) : (
     <div className="payment-page">
       <div className="payment-container">
         <form onSubmit={handleSubmit}>
@@ -73,7 +100,7 @@ const CheckoutForm = ({ price, title }) => {
           <button type="submit" disabled={!stripe || !elements || isLoading}>
             Payer
           </button>
-          {/* {errorMessage && <div style={}>{errorMessage}</div>} // J'ai commenté cette ligne parce que c'est redondant avec les messages d'erreurs déjà affiché par Stripe  */}
+          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
         </form>
       </div>
     </div>
