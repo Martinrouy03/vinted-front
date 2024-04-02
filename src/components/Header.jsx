@@ -11,16 +11,16 @@ const Header = ({
   isConnected,
   setConnexion,
   str,
-  state,
+  prices,
   sort,
   setStr,
-  setState,
+  setPrices,
   setSort,
   setIsPublishing,
 }) => {
   const navigate = useNavigate();
-  const valueMin = String(state.values[0] * 2 - 10) + "px";
-  const valueMax = String(state.values[1] * 2) + "px";
+  const valueMin = String(prices.values[0] * 2 - 10) + "px";
+  const valueMax = String(prices.values[1] * 2) + "px";
   return (
     <header>
       <div className="bandeau">
@@ -73,7 +73,7 @@ const Header = ({
                     }}
                     id="output"
                   >
-                    {Math.ceil(state.values[0])} €
+                    {Math.ceil(prices.values[0])} €
                   </output>
                   <output
                     style={{
@@ -88,16 +88,16 @@ const Header = ({
                     }}
                     id="output"
                   >
-                    {Math.ceil(state.values[1])} €
+                    {Math.ceil(prices.values[1])} €
                   </output>
                 </div>
                 <Range
                   step={0.1}
                   min={0}
                   max={100}
-                  values={state.values}
+                  values={prices.values}
                   onChange={(values) => {
-                    setState({ values });
+                    setPrices({ values });
                   }}
                   renderTrack={({ props, children }) => (
                     <div

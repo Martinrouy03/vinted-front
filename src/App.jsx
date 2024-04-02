@@ -11,6 +11,7 @@ library.add(faHeart, faMagnifyingGlass);
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
 import Publish from "./pages/Publish";
+import Payment from "./pages/Payment";
 
 // Components
 import Header from "./components/Header";
@@ -21,8 +22,8 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [modalValues, setModalValues] = useState([false, false]);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [state, setState] = useState({ values: [0, 100] });
-  const [limit, setLimit] = useState(0);
+  const [prices, setPrices] = useState({ values: [0, 100] });
+  const [limit, setLimit] = useState();
   const [sort, setSort] = useState("");
   const [str, setStr] = useState("");
 
@@ -33,8 +34,8 @@ function App() {
         setVisibility={setModalValues}
         isConnected={isConnected}
         setConnexion={setIsConnected}
-        state={state}
-        setState={setState}
+        prices={prices}
+        setPrices={setPrices}
         sort={sort}
         setSort={setSort}
         str={str}
@@ -47,26 +48,27 @@ function App() {
           element={
             <Home
               limit={limit}
-              state={state}
+              prices={prices}
               sort={sort}
-              setLimit={setLimit}
-              setState={setState}
-              setSort={setSort}
               str={str}
+              setLimit={setLimit}
+              setPrices={setPrices}
+              setSort={setSort}
               setStr={setStr}
             />
           }
         />
-        <Route path="/offer/:id" element={<Offer />} />
         <Route
-          path="/publish"
+          path="/offer/:id"
           element={
-            <Publish
-              isPublishing={isPublishing}
-              setIsPublishing={setIsPublishing}
-            />
+            <Offer isConnected={isConnected} setVisibility={setModalValues} />
           }
         />
+        <Route
+          path="/publish"
+          element={<Publish isConnected={isConnected} />}
+        />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
       {modalValues[0] && (
         <ModalSignUp

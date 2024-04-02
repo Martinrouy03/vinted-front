@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Offer = () => {
+const Offer = ({ isConnected, setVisibility }) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [offer, setOffer] = useState({});
   const [isDownloading, setIsDownloading] = useState(true);
@@ -47,7 +49,21 @@ const Offer = () => {
                   <span>{offer.owner.account.username}</span>
                 </div>
               </div>
-              <button className="green">Acheter</button>
+              <button
+                className="green"
+                onClick={() => {
+                  isConnected
+                    ? navigate("/payment", {
+                        state: {
+                          price: offer.product_price,
+                          title: offer.product_name,
+                        },
+                      })
+                    : setVisibility([false, true]);
+                }}
+              >
+                Acheter
+              </button>
             </div>
           </div>
         </div>

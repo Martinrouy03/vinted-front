@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = ({ limit, state, sort, setLimit, str }) => {
+const Home = ({ limit, prices, sort, setLimit, str }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -11,7 +11,7 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://lereacteur-vinted-api.herokuapp.com/offers?limit=${limit}&page=${page}&title=${str}&priceMin=${state.values[0]}&priceMax=${state.values[1]}&sort=${sort}`
+        `https://lereacteur-vinted-api.herokuapp.com/offers?limit=${limit}&page=${page}&title=${str}&priceMin=${prices.values[0]}&priceMax=${prices.values[1]}&sort=${sort}`
       );
       setData(response.data);
       setIsLoading(false);
@@ -21,7 +21,7 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
   };
   useEffect(() => {
     fetchData();
-  }, [str, state, sort, page]);
+  }, [str, prices, sort, page]);
 
   const pageNbLoop = (nb) => {
     let pageDivs = [];
@@ -39,9 +39,9 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
     }
     return pageDivs;
   };
-  let pageNb = Math.ceil(data.count / limit);
+  let pageNb = limit ? Math.ceil(data.count / limit) : undefined;
   return isLoading ? (
-    <div>En cours de chargment</div>
+    <div>En cours de chargement</div>
   ) : (
     <>
       <nav className="container">
@@ -58,7 +58,7 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
       </nav>
       <div className="hero">
         <img
-          src="https://lereacteur-vinted.netlify.app/static/media/hero.2c66d85a1335550c4518.jpg"
+          src="https://lereacteur-vinted.netlify.app/assets/hero-24963eb2.jpg"
           alt=""
         />
         <div className="container">
@@ -74,6 +74,7 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
           name="nb-max"
           onChange={(e) => {
             setLimit(e.target.value);
+            setPage(undefined);
           }}
         >
           <option value={data.count}>Tous</option>
@@ -92,6 +93,7 @@ const Home = ({ limit, state, sort, setLimit, str }) => {
         {data.count === 0 ? (
           <p>Désolé, aucune article ne correspond à votre recherche...</p>
         ) : (
+          // console.log(data.offers)
           data.offers.map((offer) => {
             return (
               <Link

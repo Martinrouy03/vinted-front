@@ -3,7 +3,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const Publish = () => {
+const Publish = ({ isConnected }) => {
   const navigate = useNavigate();
   const [picture, setPicture] = useState();
   const [title, setTitle] = useState("");
@@ -14,6 +14,7 @@ const Publish = () => {
   const [stt, setStt] = useState("");
   const [place, setPlace] = useState("");
   const [price, setPrice] = useState("");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -23,7 +24,7 @@ const Publish = () => {
     formData.append("size", size);
     formData.append("color", col);
     formData.append("condition", stt);
-    formData.append("place", place);
+    formData.append("city", place);
     formData.append("price", price);
     formData.append("picture", picture);
     const myToken = Cookies.get("token");
@@ -44,7 +45,9 @@ const Publish = () => {
       console.log(error);
     }
   };
-  return (
+  return !isConnected ? (
+    navigate("/")
+  ) : (
     <div className="publish">
       <form className="container" onSubmit={handleSubmit}>
         <h1>Vends ton article</h1>
@@ -68,9 +71,9 @@ const Publish = () => {
           </div>
           <div className="depot-line">
             <p>Décris ton article</p>
-            <input
-              type="text"
+            <textarea
               value={description}
+              rows={5}
               placeholder="ex: Jamais portée, mais pas neuve pour autant"
               onChange={(e) => {
                 setDescription(e.target.value);

@@ -54,8 +54,6 @@
   width: auto;
 }
 
-/* la zone de déplacement */
-
 .price-range {
   width: 200px;
   margin-left: 20px;
@@ -232,12 +230,13 @@ a {
 .newPage {
   background-color: #ebedee;
   padding: 30px 0;
+  height: 100vh;
 }
 .newPage > div {
   display: flex;
   gap: 200px;
   justify-content: center;
-  height: 100vh;
+  height: 600px;
 }
 .newPage img {
   width: 450px;
@@ -379,21 +378,18 @@ h1 {
 
 /* ---- PUBLISH ----- */
 
-.publish {
+.publish,
+.payment-page {
   background-color: #ebedee;
   padding: 30px 0;
 }
 .publish > form {
-  /* background-color: pink; */
   display: flex;
-  flex-direction: column;
-  /* align-items: center; */
   height: 100vh;
   gap: 20px;
-  /* border: 1px solid black; */
 }
 
-section {
+.publish section {
   background-color: white;
   padding: 10px 20px;
   border: 1px solid lightgray;
@@ -425,4 +421,64 @@ section input {
   align-self: flex-end;
   border-radius: 3px;
   padding: 5px;
+}
+
+/* --- Payment Page ---- */
+.payment-page {
+  height: 100vh;
+}
+.payment-container {
+  width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.payment-container form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  gap: 20px;
+}
+
+.payment-container button {
+  background-color: rgb(5, 164, 5);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+
+.price-details {
+  padding-bottom: 20px;
+  border-bottom: 1px solid lightgray;
+  /* background-color: pink; */
+}
+
+.price-line,
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.payment-container form > p {
+  color: #999999;
+}
+.price-line p {
+  color: #7a7a7a;
+}
+
+.total-line {
+  padding-bottom: 30px;
+}
+h3 {
+  font-weight: bold;
+}
+em {
+  font-weight: bold;
 }
