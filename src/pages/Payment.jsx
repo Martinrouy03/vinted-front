@@ -9,6 +9,7 @@ const stripePromise = loadStripe(
 
 const Payment = () => {
   const location = useLocation();
+  // console.log((location.state.price * 100).toFixed(0));
   const options = {
     // Type de transaction
     mode: "payment",

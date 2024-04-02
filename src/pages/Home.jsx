@@ -3,7 +3,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Home = ({ limit, prices, sort, setLimit, str }) => {
+const Home = ({
+  limit,
+  prices,
+  sort,
+  setLimit,
+  str,
+  isConnected,
+  setIsPublishing,
+  setVisibility,
+}) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -64,7 +73,19 @@ const Home = ({ limit, prices, sort, setLimit, str }) => {
         <div className="container">
           <div className="start-div">
             <h2>Prêts à faire du tri dans vos placards?</h2>
-            <button className="green">Commencer à vendre</button>
+            <button
+              className="green"
+              onClick={() => {
+                if (isConnected) {
+                  navigate("/publish");
+                } else {
+                  setIsPublishing(true);
+                  setVisibility([false, true]);
+                }
+              }}
+            >
+              Commencer à vendre
+            </button>
           </div>
         </div>
       </div>

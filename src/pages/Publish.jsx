@@ -14,6 +14,7 @@ const Publish = ({ isConnected }) => {
   const [stt, setStt] = useState("");
   const [place, setPlace] = useState("");
   const [price, setPrice] = useState("");
+  // const [urlPicture, setUrlPicture] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,12 +52,43 @@ const Publish = ({ isConnected }) => {
     <div className="publish">
       <form className="container" onSubmit={handleSubmit}>
         <h1>Vends ton article</h1>
-        <input
-          type="file"
-          onChange={(e) => {
-            setPicture(e.target.files[0]);
-          }}
-        />
+        {picture ? (
+          <div className="picture-container">
+            <img src={URL.createObjectURL(picture)} alt="picture" />
+            <button
+              onClick={() => {
+                setPicture("");
+              }}
+            >
+              Changer d'image
+            </button>
+          </div>
+        ) : (
+          <>
+            <label
+              htmlFor="picture"
+              style={{
+                backgroundColor: "white",
+                fontWeight: "bold",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "80px",
+                border: "1px solid lightgray",
+              }}
+            >
+              Photo de ton article:{" "}
+            </label>
+            <input
+              id="picture"
+              style={{ display: "none" }}
+              type="file"
+              onChange={(e) => {
+                setPicture(e.target.files[0]);
+              }}
+            />
+          </>
+        )}
         <section>
           <div className="depot-line">
             <p>Titre</p>
@@ -74,6 +106,7 @@ const Publish = ({ isConnected }) => {
             <textarea
               value={description}
               rows={5}
+              cols={50}
               placeholder="ex: Jamais portée, mais pas neuve pour autant"
               onChange={(e) => {
                 setDescription(e.target.value);

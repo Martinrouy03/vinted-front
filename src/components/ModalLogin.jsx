@@ -23,7 +23,6 @@ const ModalLogin = ({
       );
       setConnexion(true);
       setVisibility([false, false]);
-      console.log(isPublishing);
       if (isPublishing) {
         setIsPublishing(false);
         navigate("/publish");

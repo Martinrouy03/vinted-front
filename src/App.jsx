@@ -51,10 +51,13 @@ function App() {
               prices={prices}
               sort={sort}
               str={str}
+              isConnected={isConnected}
               setLimit={setLimit}
               setPrices={setPrices}
               setSort={setSort}
               setStr={setStr}
+              setIsPublishing={setIsPublishing}
+              setVisibility={setModalValues}
             />
           }
         />

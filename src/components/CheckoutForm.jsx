@@ -5,12 +5,14 @@ import {
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const CheckoutForm = ({ price, title }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  let total = price + 0.4 + 0.8;
+  let total = (price + 0.4 + 0.8).toFixed(1);
+
   // Récupération du contenu des inputs:
   const elements = useElements();
   // Pour faire la requête à Stripe:
@@ -31,7 +33,7 @@ const CheckoutForm = ({ price, title }) => {
 
     // Demande de création de paiment
     const response = await axios.post(
-      "https://lereacteur-vinted-api.herokuapp.com/payment",
+      "https://lereacteur-vinted-api.herokuapp.com/v2/payment",
       {
         amount: Number((price * 100).toFixed(0)),
         currency: "eur",
@@ -49,6 +51,8 @@ const CheckoutForm = ({ price, title }) => {
         confirmParams: {
           return_url: "http://localhost:5173/",
         },
+        // Bloque la redirections
+        redirect: "if_required",
       });
       // Si erreur pendant confirmation
       if (stripeResp.error) {
@@ -65,7 +69,16 @@ const CheckoutForm = ({ price, title }) => {
     }
   };
   return isCompleted ? (
-    <h1>Paiement effectué</h1>
+    <>
+      <br />
+      <h1>Paiement effectué!</h1>
+      <br />
+      <br />
+      <br />
+      <Link to="/" style={{ color: "blue" }}>
+        <h1>Continuez vos achats, par ici!</h1>
+      </Link>
+    </>
   ) : (
     <div className="payment-page">
       <div className="payment-container">

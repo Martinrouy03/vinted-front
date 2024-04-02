@@ -1,7 +1,15 @@
-* {
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+body {
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
+  font-style: normal;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 .container {
   width: 1235px;
@@ -196,7 +204,6 @@ a {
 
 .offer {
   width: calc((100% - 64px) / 5);
-  /* width: 100%; */
 }
 .offer > img {
   width: 100%;
@@ -384,11 +391,24 @@ h1 {
   padding: 30px 0;
 }
 .publish > form {
+  width: 800px;
   display: flex;
+  flex-direction: column;
   height: 100vh;
   gap: 20px;
 }
 
+.publish img {
+  width: 200px;
+  border-radius: 10px;
+}
+
+.picture-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
 .publish section {
   background-color: white;
   padding: 10px 20px;
@@ -481,4 +501,19 @@ h3 {
 }
 em {
   font-weight: bold;
+}
+
+@media (max-width: 1235px) {
+  .container {
+    width: 800px;
+  }
+  .queries {
+    width: 400px;
+  }
+  .buttons {
+    gap: 5px;
+  }
+  .offer {
+    width: calc((100% - 48px) / 4);
+  }
 }
